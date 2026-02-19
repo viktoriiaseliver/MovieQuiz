@@ -8,6 +8,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     // MARK: - Properties
     
@@ -44,16 +46,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
+            self?.yesButton.isEnabled = true
+            self?.noButton.isEnabled = true
         }
     }
     
     // MARK: - Actions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         handleAnswer(false)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         handleAnswer(true)
     }
     
@@ -78,9 +86,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let bestGame = statisticService.bestGame
         let totalAccuracy = statisticService.totalAccuracy
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
-        let dateString = bestGame != nil ? dateFormatter.string(from: bestGame!.date) : ""
+        let dateString = bestGame?.date.dateTimeString ?? ""
         
         let message = """
         Ваш результат: \(correctAnswers)/\(questionsAmount)
