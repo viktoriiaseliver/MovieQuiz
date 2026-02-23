@@ -4,4 +4,5 @@ weak var delegate: QuestionFactoryDelegate?
 
 protocol QuestionFactoryProtocol {
     func requestNextQuestion()
+    func loadData()
 }
