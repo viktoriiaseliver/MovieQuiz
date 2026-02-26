@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="7ww-aq-DqP">
-                                <rect key="frame" x="20" y="106" width="374" height="758.5"/>
+                                <rect key="frame" x="20" y="106" width="374" height="722"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="bPT-VX-8tz" userLabel="Counter">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="23.5"/>
@@ -47,17 +47,17 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="0uX-at-jk8" userLabel="Image with a question">
-                                        <rect key="frame" x="0.0" y="43.5" width="374" height="635"/>
+                                        <rect key="frame" x="0.0" y="43.5" width="374" height="598.5"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="786-Cr-jce" userLabel="Preview Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="561"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="524.5"/>
                                                 <color key="backgroundColor" name="YP White"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="786-Cr-jce" secondAttribute="height" multiplier="2:3" id="TTu-Fo-O54"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше, чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dn5-Zm-EHU" userLabel="Question Label">
-                                                <rect key="frame" x="0.0" y="581" width="374" height="54"/>
+                                                <rect key="frame" x="0.0" y="544.5" width="374" height="54"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="54" id="gdk-wO-EZd"/>
                                                 </constraints>
@@ -68,7 +68,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="slM-4q-ISg" userLabel="Buttons Stack View">
-                                        <rect key="frame" x="0.0" y="698.5" width="374" height="60"/>
+                                        <rect key="frame" x="0.0" y="662" width="374" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPJ-Py-JAr" userLabel="No button">
                                                 <rect key="frame" x="0.0" y="0.0" width="177" height="60"/>
@@ -127,7 +127,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="MHw-lc-j87" id="vdb-NW-qcb"/>
                         <outlet property="imageView" destination="786-Cr-jce" id="zd0-Es-BlA"/>
+                        <outlet property="noButton" destination="jPJ-Py-JAr" id="j4H-Z2-fob"/>
                         <outlet property="textLabel" destination="dn5-Zm-EHU" id="Wew-Bz-DTp"/>
+                        <outlet property="yesButton" destination="Xza-Ot-GmX" id="gCy-TY-eol"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
