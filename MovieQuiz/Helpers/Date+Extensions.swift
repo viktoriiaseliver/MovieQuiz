@@ -1,21 +1,11 @@
 import Foundation
 
-extension Date {
-    var dateTimeString: String {
-        DateFormatter.defaultDateTime.string(from: self)
-    }
-}
+private let dateTimeDefaultFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd.MM.YY hh:mm"
+    return dateFormatter
+}()
 
-private extension DateFormatter {
-    static let defaultDateTime: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.YY hh:mm"
-        return dateFormatter
-    }()
-    
-    static let resultDateTime: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy HH:mm"
-        return formatter
-    }()
+extension Date {
+    var dateTimeString: String { dateTimeDefaultFormatter.string(from: self) }
 }
