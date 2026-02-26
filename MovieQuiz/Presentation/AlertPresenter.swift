@@ -1,14 +1,7 @@
-import UIKit
 import Foundation
+import UIKit
 
-struct AlertModel {
-    let title: String
-    let message: String
-    let buttonText: String
-    let completion: () -> Void
-}
-
-final class AlertPresenter {
+class AlertPresenter {
     func show(in vc: UIViewController, model: AlertModel) {
         let alert = UIAlertController(
             title: model.title,

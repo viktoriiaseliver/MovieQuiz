@@ -1,52 +1,89 @@
 import Foundation
 
-final class StatisticService: StatisticServiceProtocol {
-    
+protocol StatisticService {
+    func store(correct count: Int, total amount: Int)
+    var totalAccuracy: Double { get }
+    var gamesCount: Int { get }
+    var bestGame: GameRecord { get }
+}
+
+
+final class StatisticServiceImplementation: StatisticService {
+    private enum Keys: String {
+        case correct, total, bestGame, gamesCount
+    }
     private let userDefaults = UserDefaults.standard
-    private var correctAnswersTotal: Int = 0
-    private var questionsTotal: Int = 0
+
+    // MARK: - Public methods
     
-    var gamesCount: Int = 0
-    var bestGame: GameResult?
-    
-    init() {
-        gamesCount = userDefaults.integer(forKey: "gamesCount")
-        correctAnswersTotal = userDefaults.integer(forKey: "correctAnswersTotal")
-        questionsTotal = userDefaults.integer(forKey: "questionsTotal")
-        
-        if let date = userDefaults.object(forKey: "bestDate") as? Date {
-            let correct = userDefaults.integer(forKey: "bestCorrect")
-            let total = userDefaults.integer(forKey: "bestTotal")
-            bestGame = GameResult(correct: correct, total: total, date: date)
+    func store(correct count: Int, total amount: Int) {
+        self.correct += count
+        self.total += amount
+        self.gamesCount += 1
+
+        let game = GameRecord(correct: count, total: amount, date: Date())
+
+        if game.isBetterThan(bestGame) {
+            bestGame = game
         }
     }
-        
-        var totalAccuracy: Double {
-            questionsTotal == 0 ? 0 : Double(correctAnswersTotal) / Double(questionsTotal) * 100
+
+    // MARK: - Public properties
+    
+    var totalAccuracy: Double {
+        Double(correct) / Double(total) * 100
+    }
+
+    private(set) var gamesCount: Int {
+        get {
+            userDefaults.integer(forKey: Keys.gamesCount.rawValue)
         }
-        
-        func store(correct count: Int, total amount: Int) {
-            gamesCount += 1
-            correctAnswersTotal += count
-            questionsTotal += amount
-            
-            let currentGame = GameResult(correct: count, total: amount, date: Date())
-            
-            if let best = bestGame {
-                if currentGame.isBetterThan(best) {
-                    bestGame = currentGame
-                }
-            } else {
-                bestGame = currentGame
-            }
-            userDefaults.set(gamesCount, forKey: "gamesCount")
-            userDefaults.set(correctAnswersTotal, forKey: "correctAnswersTotal")
-            userDefaults.set(questionsTotal, forKey: "questionsTotal")
-            
-            if let best = bestGame {
-                userDefaults.set(best.correct, forKey: "bestCorrect")
-                userDefaults.set(best.total, forKey: "bestTotal")
-                userDefaults.set(best.date, forKey: "bestDate")
-            }
+
+        set {
+            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
+
+
+    private(set) var bestGame: GameRecord {
+        get {
+            guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
+            let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
+                return .init(correct: 0, total: 0, date: Date())
+            }
+
+            return record
+        }
+
+        set {
+            guard let data = try? JSONEncoder().encode(newValue) else {
+                print("Невозможно сохранить результат")
+                return
+            }
+
+            userDefaults.set(data, forKey: Keys.bestGame.rawValue)
+        }
+    }
+
+    // MARK: - Private properties
+    
+    private var correct: Int {
+        get {
+            userDefaults.integer(forKey: Keys.correct.rawValue)
+        }
+
+        set {
+            userDefaults.set(newValue, forKey: Keys.correct.rawValue)
+        }
+    }
+
+    private var total: Int {
+        get {
+            userDefaults.integer(forKey: Keys.total.rawValue)
+        }
+
+        set {
+            userDefaults.set(newValue, forKey: Keys.total.rawValue)
+        }
+    }
+}
