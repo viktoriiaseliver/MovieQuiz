@@ -1,7 +1,7 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
-
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -21,10 +21,12 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     // MARK: - Actions
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        setButtonsEnabled(false)
         presenter.yesButtonClicked()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        setButtonsEnabled(false)
         presenter.noButtonClicked()
     }
     
@@ -35,22 +37,23 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         imageView.image = UIImage(data: step.image) ?? UIImage()
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
+        
+        setButtonsEnabled(true)
     }
     
     func show(quiz result: QuizResultsViewModel) {
-        let statsMessage = presenter.makeResultsMessage()
-        let message = [result.text, statsMessage].joined(separator: "\n\n")
-        
+        let message = presenter.makeResultsMessage()
+
         let alert = UIAlertController(
             title: result.title,
             message: message,
             preferredStyle: .alert
         )
-        
+
         let action = UIAlertAction(title: result.buttonText, style: .default) { [weak self] _ in
             self?.presenter.restartGame()
         }
-        
+
         alert.addAction(action)
         present(alert, animated: true)
     }
@@ -86,5 +89,11 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         
         alert.addAction(action)
         present(alert, animated: true)
+        
+    }
+    
+    private func setButtonsEnabled(_ isEnabled: Bool) {
+        yesButton.isEnabled = isEnabled
+        noButton.isEnabled = isEnabled
     }
 }

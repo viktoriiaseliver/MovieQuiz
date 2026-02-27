@@ -2,52 +2,80 @@ import XCTest
 
 final class MovieQuizUITests: XCTestCase {
 
+    private func poster(in app: XCUIApplication) -> XCUIElement {
+        app.images["Poster"]
+    }
+
+    private func indexLabel(in app: XCUIApplication) -> XCUIElement {
+        app.staticTexts["Index"]
+    }
+
     func testYesButtonChangesPoster() {
         let app = XCUIApplication()
         app.launch()
 
-        sleep(3)
-
-        let firstPoster = app.images["Poster"]
-        let firstPosterData = firstPoster.screenshot().pngRepresentation
+        let firstPoster = poster(in: app)
+        XCTAssertTrue(firstPoster.waitForExistence(timeout: 10))
+        let firstData = firstPoster.screenshot().pngRepresentation
 
         app.buttons["Yes"].tap()
-        sleep(3)
 
-        let secondPoster = app.images["Poster"]
-        let secondPosterData = secondPoster.screenshot().pngRepresentation
+        let secondPoster = poster(in: app)
+        XCTAssertTrue(secondPoster.waitForExistence(timeout: 10))
+        let secondData = secondPoster.screenshot().pngRepresentation
 
-        XCTAssertNotEqual(firstPosterData, secondPosterData)
+        XCTAssertNotEqual(firstData, secondData)
     }
 
     func testNoButtonChangesPoster() {
         let app = XCUIApplication()
         app.launch()
 
-        sleep(3)
-
-        let firstPoster = app.images["Poster"]
-        let firstPosterData = firstPoster.screenshot().pngRepresentation
+        let firstPoster = poster(in: app)
+        XCTAssertTrue(firstPoster.waitForExistence(timeout: 10))
+        let firstData = firstPoster.screenshot().pngRepresentation
 
         app.buttons["No"].tap()
-        sleep(3)
 
-        let secondPoster = app.images["Poster"]
-        let secondPosterData = secondPoster.screenshot().pngRepresentation
+        let secondPoster = poster(in: app)
+        XCTAssertTrue(secondPoster.waitForExistence(timeout: 10))
+        let secondData = secondPoster.screenshot().pngRepresentation
 
-        XCTAssertNotEqual(firstPosterData, secondPosterData)
+        XCTAssertNotEqual(firstData, secondData)
     }
 
-    func testYesButtonChangesIndexLabel() {
+    func testAlertAppearsAtEndOfRound() {
         let app = XCUIApplication()
         app.launch()
 
-        sleep(3)
+        XCTAssertTrue(indexLabel(in: app).waitForExistence(timeout: 10))
 
-        app.buttons["Yes"].tap()
-        sleep(1)
+        for _ in 0..<10 {
+            app.buttons["Yes"].tap()
+        }
 
-        let indexLabel = app.staticTexts["Index"]
-        XCTAssertEqual(indexLabel.label, "2/10")
+        let alert = app.alerts["Этот раунд окончен!"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10))
+        XCTAssertTrue(alert.buttons["Сыграть ещё раз"].exists)
+    }
+
+    func testAlertDismissAndCounterReset() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let index = indexLabel(in: app)
+        XCTAssertTrue(index.waitForExistence(timeout: 10))
+
+        for _ in 0..<10 {
+            app.buttons["Yes"].tap()
+        }
+
+        let alert = app.alerts["Этот раунд окончен!"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 10))
+
+        alert.buttons["Сыграть ещё раз"].tap()
+
+        XCTAssertFalse(alert.exists)
+        XCTAssertEqual(index.label, "1/10")
     }
 }

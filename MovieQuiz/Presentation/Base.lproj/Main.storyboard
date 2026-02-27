@@ -50,7 +50,7 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="38o-oc-zNS" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
                                         <color key="backgroundColor" name="white"/>
-                                        <accessibility key="accessibilityConfiguration" label="Poster ">
+                                        <accessibility key="accessibilityConfiguration" identifier="Poster">
                                             <bool key="isElement" value="YES"/>
                                         </accessibility>
                                         <constraints>
@@ -140,6 +140,7 @@
                         <outlet property="activityIndicator" destination="5xH-gQ-oMI" id="CdP-HA-Ksv"/>
                         <outlet property="counterLabel" destination="qZL-Eg-aoD" id="cw6-IS-5Q0"/>
                         <outlet property="imageView" destination="38o-oc-zNS" id="MKs-B2-LnM"/>
+                        <outlet property="noButton" destination="pEb-Jv-E3c" id="xxW-P1-4WC"/>
                         <outlet property="textLabel" destination="oa5-Vk-7ij" id="fst-nr-74u"/>
                         <outlet property="yesButton" destination="hCK-wN-WKt" id="CA4-8P-srY"/>
                     </connections>
